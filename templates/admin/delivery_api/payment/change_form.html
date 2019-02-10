@@ -4,12 +4,12 @@
 {% block object-tools-items %}
     {{ block.super }}
     <li>
-        <a class="historylink" href="{% url 'admin:twende_api_payments_start' object_id %}">
+        <a class="historylink" href="{% url 'admin:delivery_api_payments_start' object_id %}">
             Initiate payment
         </a>
     </li>
     <li>
-        <a class="historylink" href="{% url 'admin:twende_api_payments_check' object_id %}">
+        <a class="historylink" href="{% url 'admin:delivery_api_payments_check' object_id %}">
             Check payment status
         </a>
     </li>

@@ -6,7 +6,7 @@
         {% spaceless %}
             {% for user in module.children %}
                 <li class="{% cycle 'odd' 'even' %}">
-                    <a href="{% url 'admin:twende_api_user_change' user.id %}">{{ user.name }}</a>
+                    <a href="{% url 'admin:delivery_api_user_change' user.id %}">{{ user.name }}</a>
                     <b style="float:right">{{ user.last_ping }}</b>
                 </li>
             {% endfor %}

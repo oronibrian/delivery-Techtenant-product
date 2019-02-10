@@ -41,13 +41,18 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
 
-
     'django.contrib.humanize',
     'jet.dashboard',
     'jet',
     'django.contrib.admin',
-
     'delivery_api',
+
+
+    # Social auth
+    'oauth2_provider',
+    'social.apps.django_app.default',
+    'rest_framework_social_oauth2',
+
 ]
 
 MIDDLEWARE = [
@@ -73,6 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+
 
             ],
         },
@@ -142,5 +149,112 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/django_project/static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/django_project/media'
+
+
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
 
 AUTH_USER_MODEL = 'delivery_api.User'
+
+
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+
+
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        'delivery_api': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True
+        }
+    }
+}
+
+JET_SIDE_MENU_COMPACT = True
+
+JET_SIDE_MENU_ITEMS = [
+    {'label': 'General', 'app_label': 'delivery_api', 'items': [
+        {'name': 'delivery_api.kpi'},
+        {'name': 'delivery_api.riderrevenu', 'label': 'Rider revenues'},
+        {'name': 'delivery_api.user'},
+        {'name': 'delivery_api.ride'},
+        {'name': 'delivery_api.payment'},
+        {'name': 'payouts.payout'},
+        {'name': 'delivery_api.paymentresponselog'},
+        {'name': 'delivery_api.systemmessage'},
+
+        {'name': 'delivery_api.bulkmessage'},
+        {'name': 'auth.group'},
+        {'name': 'delivery_api.errorlog'},
+        {'name': 'delivery_api.locationlog'},
+    ]},
+]
+
+
+JET_INDEX_DASHBOARD = 'delivery_api.dashboard.CustomIndexDashboard'
+
+JET_THEMES = [
+    {
+        'theme': 'default', # theme folder name
+        'color': '#47bac1', # color of the theme's button in user menu
+        'title': 'Default' # theme title
+    },
+    {
+        'theme': 'green',
+        'color': '#44b78b',
+        'title': 'Green'
+    },
+    {
+        'theme': 'light-green',
+        'color': '#2faa60',
+        'title': 'Light Green'
+    },
+    {
+        'theme': 'light-violet',
+        'color': '#A464C4',
+        'title': 'Light Violet'
+    },
+    {
+        'theme': 'light-blue',
+        'color': '#5EADDE',
+        'title': 'Light Blue'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
+    }
+]
+
+JET_SIDE_MENU_COMPACT = True
