@@ -1,0 +1,205 @@
+<html>
+<head>
+    <script src="//maps.google.com/maps/api/js?key=AIzaSyBVaz4xWsief-of5dMUsD8d2Lu4R495GE8&sensor=false"
+            type="text/javascript"></script>
+</head>
+<body>
+<div id="map" style="width:100%; height:100%"></div>
+
+
+<script>
+
+
+    var mapStyle = [
+        {
+            "featureType": "landscape",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "transit",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "poi",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "labels",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "stylers": [
+                {
+                    "hue": "#00aaff"
+                },
+                {
+                    "saturation": -100
+                },
+                {
+                    "gamma": 2.15
+                },
+                {
+                    "lightness": 12
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "labels.text.fill",
+            "stylers": [
+                {
+                    "visibility": "on"
+                },
+                {
+                    "lightness": 24
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "geometry",
+            "stylers": [
+                {
+                    "lightness": 57
+                }
+            ]
+        }
+    ];
+
+
+    var clusterOptions = {
+        gridSize: 50,
+        maxZoom: 10,
+        styles: [{
+            url: 'marker-cluster.png',
+            height: 34,
+            width: 34,
+            textColor: '#000000',
+            textSize: 14,
+            anchorText: [0, 0]
+        }]
+    };
+
+    var zoom_level = 3;
+    var map;
+
+    var initMap = function () {
+        var view = this;
+        this.geocoder = new google.maps.Geocoder();
+        var point = rides[0].route[0];
+        var MyMapType = new google.maps.StyledMapType(mapStyle, {name: 'Grey'});
+
+        var mapOptions = {
+            zoom: 12,
+            center: point,
+            scrollwheel: true,
+            panControl: false,
+            zoomControl: true,
+            mapTypeControl: false,
+            scaleControl: false,
+            streetViewControl: false,
+            overviewMapControl: false,
+            minZoom: 2
+        };
+
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        map.mapTypes.set('gr', MyMapType);
+        map.setMapTypeId('gr');
+        placeMarkers()
+
+    };
+
+    var placeMarkers = function () {
+        var bounds = new google.maps.LatLngBounds();
+        var markers = [];
+        var colors = {
+            'A': '#FF0000',
+            'B': '#FF4400',
+            'C': '#FF8800',
+            'D': '#FFFF00',
+            'E': '#FF0044',
+            'F': '#FF0088',
+            'G': '#FF00FF',
+            'H': '#00FF00',
+            'I': '#44FF00',
+            'J': '#88FF00',
+            'K': '#00FF44',
+            'L': '#00FF88',
+            'M': '#0000FF',
+            'N': '#4400FF',
+            'O': '#8800FF',
+            'P': '#0044FF',
+            'Q': '#0088FF',
+            'R': '#4444FF',
+            'S': '#8844FF',
+            'T': '#4488FF',
+            'U': '#448844',
+            'V': '#884444',
+            'W': '#444488',
+            'X': '#444444',
+            'Y': '#888888',
+            'Z': '#FFFFFF'
+        };
+
+        for (t = 0; t < rides.length; t++) {
+
+            var initial = rides[t].name[0];
+            var ride = new google.maps.Polyline({
+                path: rides[t].route,
+                geodesic: true,
+                strokeColor: colors[initial],
+                strokeOpacity: 1.0,
+                strokeWeight: 3
+            });
+
+            ride.setMap(map);
+
+            new google.maps.Marker({
+                position: rides[t].route[0],
+                label: initial,
+                title: rides[t].name,
+                map: map
+            });
+        }
+        {#    var markerCluster = new MarkerClusterer(map, markers, _this.get('clusterOptions'));#}
+    };
+
+
+    var rides = {{ rides|safe }};
+
+    initMap();
+
+</script>
+
+
+</body>
+</html>

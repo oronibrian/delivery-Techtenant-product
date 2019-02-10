@@ -1,0 +1,37 @@
+{% extends "gis/admin/openlayers.html" %}
+
+{% block init_function %}jQuery(document).ready(function ($) {
+    var $modules = $('.change-form').find('#content-main > form > div').find('> .module'),
+        gis_module_classes = $('#{{ id }}_map').parents('.module')[0].classList,
+        tab_changed_function = function (hash, module, event) {
+            var result = hash.match(/^(#(\/tab\/(.+)\/)?)?$/i);
+
+            if (result == null) {
+                return;
+            }
+
+            result = result[3] != undefined ? result[3] : '';
+
+            if (result == module) {
+                {{ module }}.init();
+                if (event) {
+                    $(this).off(event);
+                } else {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+    $modules.each(function (i) {
+        var module = 'module_' + i;
+        if ($.inArray(module, gis_module_classes) != -1) {
+            // immediate call, if already in tab
+            if (! tab_changed_function(location.hash, module)) {
+                $(window).on('hashchange', function (event) {
+                   tab_changed_function(location.hash, module, event);
+                });
+            }
+        }
+    });
+});{% endblock %}

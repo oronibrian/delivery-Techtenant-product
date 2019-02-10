@@ -1,0 +1,16 @@
+{% extends "admin_tools/dashboard/module.html" %}
+{% load i18n %}
+
+{% block module_content %}
+    <ul>
+        {% spaceless %}
+            {% for ride in module.children %}
+                <li class="{% cycle 'odd' 'even' %}">
+                    <a href="{% url 'admin:twende_api_ride_change' ride.id %}">{{ ride.created }}</a>
+                    {{ ride.driver.name }} <i>riding</i> {{ ride.customer.name }}
+                    <b style="float:right">{{ ride.fare }}</b>
+                </li>
+            {% endfor %}
+        {% endspaceless %}
+    </ul>
+{% endblock %}
