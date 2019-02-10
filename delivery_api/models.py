@@ -55,6 +55,7 @@ class User(AbstractUser):
     is_staff        = models.BooleanField(default=False, null=False)
     
     objects = UserManager()
+    geo_objects = models.GeoManager()    
 
 
     @property
