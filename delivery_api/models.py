@@ -11,7 +11,9 @@ from django_extensions.db.fields import (ModificationDateTimeField,
 from moneyed.classes import Money
 from django_fsm import FSMField, transition
 from django.contrib.postgres.fields import JSONField
+from location_field.models.spatial import LocationField
 
+from django.contrib.gis.geos import Point
 
 class User(AbstractUser):
 
@@ -118,11 +120,11 @@ class Ride(models.Model):
     customer = models.ForeignKey('delivery_api.User', related_name='customer_ride', null=True)
     driver = models.ForeignKey('delivery_api.User', null=True, blank=True, related_name='driver_ride')
 
-    origin = models.PointField(null=True)
     origin_text = models.CharField(max_length=500, null=True, blank=True)
+    origin = LocationField(based_fields=['origin_text'], zoom=7, default=Point(1.0, 1.0))
 
-    destination = models.PointField(null=True)
     destination_text = models.CharField(max_length=500, null=True, blank=True)
+    destination = LocationField(based_fields=['destination_text'], zoom=7, default=Point(1.0, 1.0))
 
     customer_start_location = models.PointField(null=True)
     driver_start_location = models.PointField(null=True)

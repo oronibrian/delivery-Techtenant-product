@@ -29,12 +29,12 @@ router.register(r'users', views.UserViewSet)
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
-    # url(r'^map$', MapView.as_view(), name='map'),
-    # url(r'^map/(?P<pk>[0-9]+)$', RideMapView.as_view(), name='ride-map'),
-    # url(r'^user/(?P<pk>[0-9]+)$', UserMapView.as_view(), name='user-map'),
-    # url(r'^drivers/$', DriverListView.as_view(), name='driver-list'),
-    # url(r'^drivers/(?P<pk>[0-9]+)$', DriverDetailView.as_view(), name='driver-detail'),
-    # url(r'^kpi$', KpiView.as_view(), name='KpiView'),
+    url(r'^map$', MapView.as_view(), name='map'),
+    url(r'^map/(?P<pk>[0-9]+)$', RideMapView.as_view(), name='ride-map'),
+    url(r'^user/(?P<pk>[0-9]+)$', UserMapView.as_view(), name='user-map'),
+    url(r'^drivers/$', DriverListView.as_view(), name='driver-list'),
+    url(r'^drivers/(?P<pk>[0-9]+)$', DriverDetailView.as_view(), name='driver-detail'),
+    url(r'^kpi$', KpiView.as_view(), name='KpiView'),
 
     url(r'^api/', include(router.urls)),
 
@@ -47,7 +47,7 @@ urlpatterns = [
     url(r'^api/drivers/$', DriverListView.as_view(), name='driver-list'),
     url(r'^api/drivers/(?P<pk>[0-9]+)$', DriverDetailView.as_view(), name='driver-detail'),
 
-    url(r'^api/accounts/me$', views.AccountMeView.as_view(), name='account-me'),
+    url(r'^api/accounts/mine$', views.AccountMeView.as_view(), name='account-me'),
     url(r'^api/accounts/$', views.AccountListView.as_view(), name='account-list'),
     url(r'^api/token-auth/', obtain_jwt_token,name='token-auth'),
 
