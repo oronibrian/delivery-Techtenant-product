@@ -53,6 +53,10 @@ INSTALLED_APPS = [
     'social.apps.django_app.default',
     'rest_framework_social_oauth2',
 
+    'mapwidgets',
+    'location_field.apps.DefaultConfig',
+
+
 ]
 
 MIDDLEWARE = [
@@ -149,10 +153,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/django_project/static'
+STATIC_ROOT = 'static'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/django_project/media'
+MEDIA_ROOT = 'media'
 
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'
@@ -162,6 +166,29 @@ AUTH_USER_MODEL = 'delivery_api.User'
 
 
 
+
+LOCATION_FIELD = {
+    'map.provider': 'google',
+    'map.zoom': 13,
+
+    'search.provider': 'google',
+    'search.suffix': '',
+
+    # Google
+    'provider.google.api': '//maps.google.com/maps/api/js',
+    'provider.google.api_key': 'AIzaSyBOMTEba6n0Xc0pUHQLMnEHS6DQ-rfBg64',
+    'provider.google.map_type': 'ROADMAP',
+
+    # Mapbox
+    # 'provider.mapbox.access_token': '',
+    # 'provider.mapbox.max_zoom': 18,
+    # 'provider.mapbox.id': 'mapbox.streets',
+
+    # OpenStreetMap
+    'provider.openstreetmap.max_zoom': 18,
+
+    
+}
 
 
 LOGGING = {

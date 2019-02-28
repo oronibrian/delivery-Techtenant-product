@@ -6,6 +6,7 @@ from django.conf.urls import url
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.gis import admin
+
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.db.models import Case, When
@@ -136,10 +137,10 @@ class CustomUserAdmin(admin.OSMGeoAdmin, UserAdmin):
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
         (_('Extra info'), {'fields': ('phone', 'avatar', 'gcm_token',
                                       'is_driver', 'state')}),
-        (_('Rider vetting'), {'fields': ('customer_flow', 'rider_flow', 'drivers_license',
+        (_('Rider Docs'), {'fields': ('customer_flow', 'rider_flow', 'drivers_license',
                                         'insurance', 'id_card', 'conduct', 'rider_profile',
                                         'profile_picture', 'test_ride', 'motorbike_check',
-                                        'starters_package', 'twende_rider')}),
+                                        'starters_package', 'delivery_rider')}),
         (_('Rider info'), {'fields': ('base', 'birthdate', 'experience', 'license_number',
                                         'association', 'slogan', 'documents')}),
         (_('Rides'), {'fields': ('rider_rides', 'customer_rides')}),
@@ -166,14 +167,14 @@ class CustomUserAdmin(admin.OSMGeoAdmin, UserAdmin):
 
     def rider_rides(self, obj):
         rides = Ride.objects.filter(driver=obj)
-        url = '{}?driver_id={}'.format(reverse('admin:twende_api_ride_changelist'), obj.id)
+        url = '{}?driver_id={}'.format(reverse('admin:delivery_api_ride_changelist'), obj.id)
         return format_html('<a href="{}">{} rides ({} finalized)</a>'.format(url, rides.count(),
                                                               rides.filter(state='finalized').count()))
     rider_rides.short_description = 'Rides as rider'
 
     def customer_rides(self, obj):
         rides = Ride.objects.filter(customer=obj)
-        url = '{}?customer_id={}'.format(reverse('admin:twende_api_ride_changelist'), obj.id)
+        url = '{}?customer_id={}'.format(reverse('admin:delivery_api_ride_changelist'), obj.id)
         return format_html('<a href="{}">{} rides ({} finalized)</a>'.format(url, rides.count(),
                                                               rides.filter(state='finalized').count()))
     customer_rides.short_description = 'Rides as customer'
@@ -181,7 +182,7 @@ class CustomUserAdmin(admin.OSMGeoAdmin, UserAdmin):
     def bulk_message(self, request, queryset):
         message = BulkMessage.objects.create()
         message.receivers = queryset
-        url = reverse('admin:twende_api_bulkmessage_change', args=(message.id, ))
+        url = reverse('admin:delivery_api_bulkmessage_change', args=(message.id, ))
         return redirect(url)
     bulk_message.short_description = "Send bulk message to selected users."
 
@@ -287,7 +288,7 @@ class RideAdmin(admin.OSMGeoAdmin):
 
     def map(self, obj):
         return "<iframe style='width:600px; height: 400px; border: 0'" \
-               " src='{0}/map/{1}'></iframe>".format('https://api.twende.co.ke', obj.id)
+               " src='{0}/map/{1}'></iframe>".format('127.0.0.1:8000', obj.id)
 
     map.allow_tags = True
 
@@ -343,6 +344,7 @@ class RideAdmin(admin.OSMGeoAdmin):
 
 admin.site.register(Ride, RideAdmin)
 
+# admin.site.register(Ride, admin.OSMGeoAdmin)
 
 class SystemMessageAdmin(admin.ModelAdmin):
 
@@ -429,7 +431,7 @@ class PaymentAdmin(admin.ModelAdmin):
             self.message_user(request=request,
                               message='Error checking payment: {}'.format(e),
                               level='ERROR')
-        payment_url = reverse('admin:twende_api_payment_change', args=(payment.id,))
+        payment_url = reverse('admin:delivery_api_payment_change', args=(payment.id,))
         return HttpResponseRedirect(payment_url)
 
     def check_statuses(self, request, queryset):
