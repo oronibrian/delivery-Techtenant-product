@@ -1,20 +1,10 @@
 language: python
-sudo: false # faster builds
 
 python:
-  - "2.6"
   - "2.7"
-  - "3.3"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-  - "3.7"
+  
 
-install: # => 5
-      - pip install -r requirements.txt
-
-env:
-  - DJANGO_VERSION=1.11.18
+install: pip install -r requirements.txt
 
 
-script: pytest
+script: python manage.py test
