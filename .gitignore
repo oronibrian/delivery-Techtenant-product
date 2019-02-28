@@ -8,3 +8,10 @@ local_settings.py
 
 .env
 db.sqlite3
+
+!log/placeholder
+media/**
+!media/**/init.txt
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
